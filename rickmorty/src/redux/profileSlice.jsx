@@ -6,6 +6,8 @@ const initialState = {
     species:"",
     gender: "",
     image: "",
+    location: "",
+    episode: [],
 }
 
 export const profileSlice = createSlice({
@@ -13,12 +15,14 @@ export const profileSlice = createSlice({
     initialState,
     reducers: {
         addProfile: (state,action) => {
-            const {name, status, species, gender, image} = action.payload
+            const {name, status, species, gender, image, location, episode} = action.payload
             state.name = name
             state.status= status
             state.species= species
             state.gender = gender
             state.image = image
+            state.location = location
+            state.episode = episode
         }
     }
 })

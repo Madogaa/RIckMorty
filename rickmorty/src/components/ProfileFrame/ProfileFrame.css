@@ -1,0 +1,8 @@
+.profile .locations img{
+    width: 36px;
+    height: 100%;
+}
+
+.locations{
+    min-width: 420px;
+}

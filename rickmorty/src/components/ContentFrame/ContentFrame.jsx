@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ContentFrame.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { addProfile } from "../../redux/profileSlice"
 
@@ -8,6 +8,8 @@ function ContentFrame() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const profile = useSelector((state) => state.profile);
 
   const [profiles, setProfiles] = useState([]);
   const [showAllProfiles, setShowAllProfiles] = useState(false);
@@ -43,6 +45,8 @@ function ContentFrame() {
       species: profile.species,
       gender: profile.gender,
       image: profile.image,
+      location: profile.location,
+      episode: profile.episode,
     }
     dispatch(addProfile(data))
     navigate('/profile')
@@ -58,7 +62,13 @@ function ContentFrame() {
 
   return (
     <div>
-      <h1 className='text-3xl font-semibold py-8'>Rick & Morty</h1>
+      <div className="relative py-8">
+      <h1 className='text-3xl font-semibold'>Rick & Morty</h1>
+      <div className={`${profile.name === "" ? "hidden" : "" } absolute flex justify-center items-center gap-3 right-0 top-0 h-full py-8`}>
+        <img className="w-12 rounded-full" src={profile.image} alt="Profile Image" />
+        <p>My Profile</p>
+      </div>
+      </div>
 
       <ul className="switcher flex gap-6 justify-center pb-6 text-xl font-semibold">
         <li className={filter === "All" ? "active-filter" : ""} onClick={() => setFilter("All")}>All</li>
