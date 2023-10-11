@@ -55,7 +55,7 @@ function ProfileFrame() {
           <li className="border-r-2 text-gray-400 border-gray-300 px-2">
             {profile.species}
           </li>
-          <li className="px-2 text-gray-400">{profile.gender}</li>
+          <li className=" px-2 text-gray-400">{profile.gender}</li>
         </ul>
 
         <div className="flex flex-col gap-6 pt-12">
