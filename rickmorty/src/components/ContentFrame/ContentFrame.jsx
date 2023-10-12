@@ -1,13 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./ContentFrame.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { addProfile } from "../../redux/profileSlice";
+import { useSelector } from "react-redux";
+import Profile from "./Profile";
 
 function ContentFrame() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   // Estado del perfil del usuario
   const profile = useSelector((state) => state.profile);
 
@@ -30,20 +26,6 @@ function ContentFrame() {
     ? filteredProfiles
     : filteredProfiles.slice(0, 8);
 
-  // Función para obtener la clase de color del "status" según el estado del perfil
-  const getTextColorClass = (status) => {
-    switch (status) {
-      case "Dead":
-        return "text-red-400"; // Rojo para "Dead"
-      case "Alive":
-        return "text-green-400"; // Verde para "Alive"
-      case "unknown":
-        return "text-blue-400"; // Azul para "unknown"
-      default:
-        return "text-gray-700"; // Otros colores por defecto
-    }
-  };
-
   // Función para cargar más perfiles
   const loadMoreProfiles = useCallback(() => {
     if (page < totalPages) {
@@ -51,24 +33,6 @@ function ContentFrame() {
       setShowAllProfiles(true); // Muestra todos los perfiles disponibles en memoria
     } else if (page === totalPages) setShowAllProfiles(false); // Dejar de mostrar boton LOAD MORE cuando todos los perfiles estan cargados
   }, [page, totalPages]);
-
-  // Función para manejar el clic en un perfil
-  const handleProfileClick = (profile) => {
-    // Preparar los datos del perfil
-    const data = {
-      name: profile.name,
-      status: profile.status,
-      species: profile.species,
-      gender: profile.gender,
-      image: profile.image,
-      location: profile.location,
-      episode: profile.episode,
-    };
-    // Agregarlos al estado
-    dispatch(addProfile(data));
-    // Navegar a la página de perfil
-    navigate("/profile");
-  };
 
   // Efecto para cargar perfiles desde la API
   useEffect(() => {
@@ -135,36 +99,7 @@ function ContentFrame() {
 
       <div className="layout grid grid-cols-[repeat(2,minmax(150px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-3 sm:gap-8">
         {displayedProfiles.map((profile, index) => (
-          <div
-            onClick={() => {
-              handleProfileClick(profile);
-            }}
-            className="profile p-4 sm:p-0 border-2 border-gray-100 rounded-md cursor-pointer"
-            key={index}
-          >
-            <img src={profile.image} alt="Profile Img" />
-            <div className="flex flex-col gap-2 justify-center align-center px-0 pt-2 sm:p-4">
-              <h4
-                id="name"
-                className="whitespace-nowrap overflow-hidden text-ellipsis text-lg font-semibold text-blue"
-              >
-                {profile.name}
-              </h4>
-              <ul className="attributes flex justify-center flex-wrap">
-                <li
-                  className={`w-full sm:w-auto font-semibold border-r-2 border-none sm:border-gray-300 px-2 ${getTextColorClass(
-                    profile.status
-                  )}`}
-                >
-                  {profile.status}
-                </li>
-                <li className="border-r-2 text-gray-400 border-gray-300 pr-1 sm:px-2">
-                  {profile.species}
-                </li>
-                <li className="pl-1 sm:px-2 text-gray-400">{profile.gender}</li>
-              </ul>
-            </div>
-          </div>
+          <Profile key={index} profile={profile} />
         ))}
       </div>
 
