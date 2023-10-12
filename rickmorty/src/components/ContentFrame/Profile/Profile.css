@@ -1,0 +1,19 @@
+.profile img{
+    width: 100%;
+    max-height: 250px;
+    object-fit:cover ;
+}
+
+/* RESPONSIVE MOBILE DESIGN */
+
+@media (max-width: 420px) {
+
+    .profile ul{
+        font-size: 12px;
+    }
+
+    .profileimg{
+        margin-right: 1rem;
+    }
+
+}

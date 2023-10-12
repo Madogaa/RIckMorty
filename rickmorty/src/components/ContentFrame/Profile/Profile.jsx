@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addProfile } from "../../redux/profileSlice";
+import { addProfile } from "../../../redux/profileSlice";
+import './Profile.css'
 
 function Profile({ profile }) {
 

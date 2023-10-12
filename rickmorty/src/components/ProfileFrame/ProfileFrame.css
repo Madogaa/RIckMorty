@@ -8,6 +8,8 @@
     max-height: 100%;
 }
 
+/* RESPONSIVE MOBILE DESIGN */
+
 @media (max-width: 420px) {
     #layout{
         padding: 1rem 0;

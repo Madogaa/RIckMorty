@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./ContentFrame.css";
 import { useSelector } from "react-redux";
-import Profile from "./Profile";
+import Profile from "./Profile/Profile";
 
 function ContentFrame() {
   // Estado del perfil del usuario
