@@ -7,7 +7,7 @@ function Accordion({ title, icon, content, isOpen, onToggle }) {
 
   return (
     <div
-      className={`locations ${isOpen ? "border" : "" } p-1 border-brigthblue cursor-pointer ${
+      className={`locations ${isOpen ? "border-2" : "" } p-1 border-brigthblue cursor-pointer ${
         isOpen ? "open" : ""
       }`}
     >

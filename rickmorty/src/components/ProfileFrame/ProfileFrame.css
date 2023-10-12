@@ -1,8 +1,47 @@
-.profile .locations img{
+#profile .locations img{
     width: 36px;
     height: 100%;
 }
 
 .locations{
     min-width: 420px;
+}
+
+@media (max-width: 420px) {
+    #layout{
+        padding: 1rem 0;
+        justify-content: space-between;
+    }
+
+    #profile{
+        width: 100%;
+    }
+
+    #detail{
+        width: 100%;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 0 0.5rem;
+    }
+
+    #detail div{
+        height: 72px;
+        width: 72px;
+    }
+
+    #detail span{
+        text-align: left;
+    }
+
+    #accordions{
+        margin-top: 1rem;
+        border-top: 1px gainsboro solid;
+        width: 100%;
+    }
+
+    .locations{
+        min-width: 100%;
+        max-width: 100%;
+    }
 }

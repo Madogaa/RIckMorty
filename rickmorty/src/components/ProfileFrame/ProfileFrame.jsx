@@ -38,27 +38,34 @@ function ProfileFrame() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen justify-around items-center p-20">
-      <div className="profile flex flex-col justify-center items-center">
-        <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-          <img className="w-full h-full" src={profile.image} alt="" />
+    <div
+      id="layout"
+      className="flex flex-col w-full min-h-screen justify-around items-center py-20"
+    >
+      <div id="profile" className="flex flex-col justify-center items-center">
+        <div id="detail" className="flex flex-col justify-center items-center gap-4">
+          <div className="w-32 h-32 rounded-full overflow-hidden">
+            <img className="w-full h-full" src={profile.image} alt="" />
+          </div>
+          <span>
+            <h4 className="text-2xl text-blue font-semibold">{profile.name}</h4>
+            <ul className="flex justify-center">
+              <li
+                className={`font-semibold border-r-2 border-gray-300 pr-2 ${getTextColorClass(
+                  profile.status
+                )}`}
+              >
+                {profile.status}
+              </li>
+              <li className="border-r-2 text-gray-400 border-gray-300 px-2">
+                {profile.species}
+              </li>
+              <li className=" pl-2 text-gray-400">{profile.gender}</li>
+            </ul>
+          </span>
         </div>
-        <h4 className="text-2xl text-blue font-semibold">{profile.name}</h4>
-        <ul className="flex justify-center">
-          <li
-            className={`font-semibold border-r-2 border-gray-300 px-2 ${getTextColorClass(
-              profile.status
-            )}`}
-          >
-            {profile.status}
-          </li>
-          <li className="border-r-2 text-gray-400 border-gray-300 px-2">
-            {profile.species}
-          </li>
-          <li className=" px-2 text-gray-400">{profile.gender}</li>
-        </ul>
 
-        <div className="flex flex-col gap-6 pt-12">
+        <div id="accordions" className="flex flex-col gap-6 mt-12" >
           <Accordion
             title="Locations"
             icon="/LocationIcon.svg"
@@ -83,9 +90,10 @@ function ProfileFrame() {
           />
         </div>
       </div>
-      <div className="back bg-brigthblue text-white font-semibold rounded-md mt-10">
+      <div className="back bg-brigthblue text-white font-semibold rounded-md mt-12">
         <button
-        className="py-4 px-36"
+          id="backwards"
+          className="py-4 px-36"
           onClick={() => {
             handleNavigateBack();
           }}

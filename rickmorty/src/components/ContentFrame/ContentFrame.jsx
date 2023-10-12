@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./ContentFrame.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ function ContentFrame() {
   const [profiles, setProfiles] = useState([]);
   const [showAllProfiles, setShowAllProfiles] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [page, setPage] = useState(1); // Página actual
+  const [totalPages, setTotalPages] = useState(1); // Número total de páginas
 
   const filteredProfiles = filter === "All"
   ? profiles
@@ -34,9 +36,13 @@ function ContentFrame() {
     }
   };
 
-  const toggleShowAllProfiles = () => {
-    setShowAllProfiles(!showAllProfiles);
-  };
+  const loadMoreProfiles = useCallback(() => {
+    if (page < totalPages) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      setShowAllProfiles(true)
+    } else if(page === totalPages) setShowAllProfiles(false)
+  }, [page, totalPages]);
 
   const handleProfileClick = (profile) => {
     const data = {
@@ -53,10 +59,17 @@ function ContentFrame() {
   }
 
   useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character")
+    // Usar la URL de la página actual en la solicitud
+    fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
       .then((data) => data.json())
-      .then((response) => setProfiles(response.results));
-  }, []);
+      .then((response) => {
+        // Actualizar los perfiles y la información de paginación
+        setProfiles((prevProfiles) => [...prevProfiles, ...response.results]);
+        setTotalPages(response.info.pages);
+        console.log(profiles)
+      });
+  }, [page]); // Volver a cargar cuando cambie la página
+
 
 
 
@@ -79,11 +92,11 @@ function ContentFrame() {
 
       <div className="layout grid grid-cols-[repeat(2,minmax(150px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-3 sm:gap-8">
         {displayedProfiles
-          .map((profile) => (
+          .map((profile,index) => (
             <div
               onClick={()=> { handleProfileClick(profile) }}
               className="profile p-4 sm:p-0 border-2 border-gray-100 rounded-md cursor-pointer"
-              key={profile.id}
+              key={index}
             >
               <img src={profile.image} alt="Profile Img" />
               <div className="flex flex-col gap-2 justify-center align-center px-0 pt-2 sm:p-4">
@@ -107,13 +120,16 @@ function ContentFrame() {
       </div>
 
       <div className="flex justify-center mt-5 mb-5">
-        <button
-          onClick={toggleShowAllProfiles}
-          className="text-blue-400 py-1 text-xl border-b-2 border-blue-400"
-        >
-          {showAllProfiles ? "SEE LESS" : "LOAD MORE"}
-        </button>
+        {page < totalPages && (
+          <button
+            onClick={loadMoreProfiles}
+            className="text-blue-400 py-1 text-xl border-b-2 border-blue-400"
+          >
+            LOAD MORE
+          </button>
+        )}
       </div>
+
     </div>
   );
 }
