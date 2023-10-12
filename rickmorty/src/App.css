@@ -5,6 +5,14 @@
   color: #222;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
 .text-blue{
   color: #223263;
 }

@@ -40,7 +40,7 @@ function ProfileFrame() {
   return (
     <div
       id="layout"
-      className="flex flex-col w-full min-h-screen justify-around items-center py-20"
+      className="flex flex-col w-full h-screen justify-around items-center py-20"
     >
       <div id="profile" className="flex flex-col justify-center items-center">
         <div id="detail" className="flex flex-col justify-center items-center gap-4">

@@ -7,12 +7,12 @@ function Accordion({ title, icon, content, isOpen, onToggle }) {
 
   return (
     <div
-      className={`locations ${isOpen ? "border-2" : "" } p-1 border-brigthblue cursor-pointer ${
+      className={`flex flex-col locations ${isOpen ? "border-2 flex-grow" : "" } p-1 border-brigthblue cursor-pointer ${
         isOpen ? "open" : ""
       }`}
     >
       <div
-        className="flex justify-between items-center"
+        className={`flex justify-between items-center`}
         onClick={toggleAccordion}
       >
         <div className="flex justify-start items-center gap-4">
@@ -21,7 +21,7 @@ function Accordion({ title, icon, content, isOpen, onToggle }) {
         </div>
         <img src="/ArrowDown.svg" alt="ArrowDown Icon" />
       </div>
-      {isOpen && <div className="content text-left p-1">
+      {isOpen && <div className={`content text-left p-1 overflow-y-scroll hide-scrollbar ${isOpen ? "flex-grow basis-0" : "" } `}>
         {content}
         </div>}
     </div>
