@@ -37,12 +37,34 @@ function ProfileFrame() {
     }
   };
 
+  const [episodesData, setEpisodesData] = useState([]);
+  useEffect(() => {
+    // Función para cargar los datos de episodios
+    const fetchEpisodes = async () => {
+      const episodePromises = profile.episode.map((episodeURL) =>
+        fetch(episodeURL).then((response) => response.json())
+      );
+
+      // Espera todas las promesas de episodios y establece los datos cuando estén listos
+      Promise.all(episodePromises)
+        .then((episodes) => {
+          setEpisodesData(episodes);
+        })
+        .catch((error) => {
+          console.error("Error al cargar los episodios", error);
+        });
+    };
+
+    // Llama a la función para cargar los datos de episodios
+    fetchEpisodes();
+  }, [profile.episode]);
+
   return (
     <div
       id="layout"
       className="flex flex-col w-full h-screen justify-around items-center py-20"
     >
-      <div id="profile" className="flex flex-col justify-center items-center">
+      <div id="profile" className="flex flex-col flex-grow justify-center items-center">
         <div id="detail" className="flex flex-col justify-center items-center gap-4">
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <img className="w-full h-full" src={profile.image} alt="" />
@@ -65,7 +87,7 @@ function ProfileFrame() {
           </span>
         </div>
 
-        <div id="accordions" className="flex flex-col gap-6 mt-12" >
+        <div id="accordions" className="flex flex-col flex-grow gap-6 mt-12" >
           <Accordion
             title="Locations"
             icon="/LocationIcon.svg"
@@ -78,9 +100,9 @@ function ProfileFrame() {
             icon="/EpisodesIcon.svg"
             content={
               <div className="flex flex-col gap-2">
-                {profile.episode.map((episode, index) => (
-                  <p className="text-gray-400" key={index}>
-                    {episode}
+                {episodesData.map((episode) => (
+                  <p className="text-gray-400" key={episode.id}>
+                    {`${episode.name} (${episode.episode})`}
                   </p>
                 ))}
               </div>

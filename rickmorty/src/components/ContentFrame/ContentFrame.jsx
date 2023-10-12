@@ -66,7 +66,6 @@ function ContentFrame() {
         // Actualizar los perfiles y la información de paginación
         setProfiles((prevProfiles) => [...prevProfiles, ...response.results]);
         setTotalPages(response.info.pages);
-        console.log(profiles)
       });
   }, [page]); // Volver a cargar cuando cambie la página
 
