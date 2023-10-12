@@ -5,15 +5,23 @@ import { useNavigate } from "react-router-dom";
 import "./ProfileFrame.css";
 
 function ProfileFrame() {
+  // Obtener el perfil del estado global
   const profile = useSelector((state) => state.profile);
-  const navigate = useNavigate();
 
+  // Estados locales
+  const [openAccordionIndex, setOpenAccordionIndex] = useState(null); // Indice del acordeon abierto
+  const [episodesData, setEpisodesData] = useState([]); // Estado para almacenar datos de episodios
+
+  // Función para navegar de regreso a la página anterior
+  const navigate = useNavigate();
   const handleNavigateBack = () => navigate("/");
 
+  // Comprueba si el perfil está vacío y navega de regreso
   useEffect(() => {
     if (profile.name === "") handleNavigateBack();
   }, []);
 
+  // Función para obtener la clase de color de texto del según el estado del perfil
   const getTextColorClass = (status) => {
     switch (status) {
       case "Dead":
@@ -27,17 +35,15 @@ function ProfileFrame() {
     }
   };
 
-  const [openAccordionIndex, setOpenAccordionIndex] = useState(null);
-
+  // Función para manejar el click en los acordeones
   const handleAccordionClick = (index) => {
     if (openAccordionIndex === index) {
-      setOpenAccordionIndex(null); // Cierra el acordeón si se hace clic en el activo
+      setOpenAccordionIndex(null); // Cierra el acordeón si se hace click en el activo
     } else {
-      setOpenAccordionIndex(index); // Abre el acordeón si se hace clic en otro
+      setOpenAccordionIndex(index); // Abre el acordeón si se hace click en otro
     }
   };
 
-  const [episodesData, setEpisodesData] = useState([]);
   useEffect(() => {
     // Función para cargar los datos de episodios
     const fetchEpisodes = async () => {
@@ -55,7 +61,7 @@ function ProfileFrame() {
         });
     };
 
-    // Llama a la función para cargar los datos de episodios
+    // Llama a la función para cargar los datos de episodios cuando cambia el perfil o cuando se carga el componente
     fetchEpisodes();
   }, [profile.episode]);
 
@@ -64,8 +70,14 @@ function ProfileFrame() {
       id="layout"
       className="flex flex-col w-full h-screen justify-around items-center py-20"
     >
-      <div id="profile" className="flex flex-col flex-grow justify-center items-center">
-        <div id="detail" className="flex flex-col justify-center items-center gap-4">
+      <div
+        id="profile"
+        className="flex flex-col flex-grow justify-center items-center"
+      >
+        <div
+          id="detail"
+          className="flex flex-col justify-center items-center gap-4"
+        >
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <img className="w-full h-full" src={profile.image} alt="" />
           </div>
@@ -87,7 +99,7 @@ function ProfileFrame() {
           </span>
         </div>
 
-        <div id="accordions" className="flex flex-col flex-grow gap-6 mt-12" >
+        <div id="accordions" className="flex flex-col flex-grow gap-6 mt-12">
           <Accordion
             title="Locations"
             icon="/LocationIcon.svg"

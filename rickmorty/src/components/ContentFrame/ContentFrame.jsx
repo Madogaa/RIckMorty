@@ -8,24 +8,29 @@ function ContentFrame() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Estado del perfil del usuario
   const profile = useSelector((state) => state.profile);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [profiles, setProfiles] = useState([]);
-  const [showAllProfiles, setShowAllProfiles] = useState(false);
-  const [filter, setFilter] = useState("All");
+  // Estados locales
+  const [isLoading, setIsLoading] = useState(false); // Control de carga de perfiles
+  const [profiles, setProfiles] = useState([]); // Almacén de perfiles
+  const [showAllProfiles, setShowAllProfiles] = useState(false); // Cantidad de perfiles en View
+  const [filter, setFilter] = useState("All"); // Filtro de perfiles
   const [page, setPage] = useState(1); // Página actual
   const [totalPages, setTotalPages] = useState(1); // Número total de páginas
 
+  // Filtrar perfiles según el estado
   const filteredProfiles =
     filter === "All"
       ? profiles
       : profiles.filter((profile) => profile.status === filter);
 
+  // Limitar la cantidad de perfiles mostrados
   const displayedProfiles = showAllProfiles
     ? filteredProfiles
     : filteredProfiles.slice(0, 8);
 
+  // Función para obtener la clase de color del "status" según el estado del perfil
   const getTextColorClass = (status) => {
     switch (status) {
       case "Dead":
@@ -39,15 +44,17 @@ function ContentFrame() {
     }
   };
 
+  // Función para cargar más perfiles
   const loadMoreProfiles = useCallback(() => {
     if (page < totalPages) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      setShowAllProfiles(true);
-    } else if (page === totalPages) setShowAllProfiles(false);
+      setPage(page + 1); // Avanza una pagina
+      setShowAllProfiles(true); // Muestra todos los perfiles disponibles en memoria
+    } else if (page === totalPages) setShowAllProfiles(false); // Dejar de mostrar boton LOAD MORE cuando todos los perfiles estan cargados
   }, [page, totalPages]);
 
+  // Función para manejar el clic en un perfil
   const handleProfileClick = (profile) => {
+    // Preparar los datos del perfil
     const data = {
       name: profile.name,
       status: profile.status,
@@ -57,10 +64,13 @@ function ContentFrame() {
       location: profile.location,
       episode: profile.episode,
     };
+    // Agregarlos al estado
     dispatch(addProfile(data));
+    // Navegar a la página de perfil
     navigate("/profile");
   };
 
+  // Efecto para cargar perfiles desde la API
   useEffect(() => {
     setIsLoading(true);
     fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
@@ -69,7 +79,7 @@ function ContentFrame() {
         // Actualizar los perfiles y la información de paginación
         setProfiles((prevProfiles) => [...prevProfiles, ...response.results]);
         setTotalPages(response.info.pages);
-        setIsLoading(false);
+        setIsLoading(false); // Deja de mostrar el "loader"
       });
   }, [page]); // Volver a cargar cuando cambie la página
 

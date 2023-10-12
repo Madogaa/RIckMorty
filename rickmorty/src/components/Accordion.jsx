@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function Accordion({ title, icon, content, isOpen, onToggle }) {
+  // Función para alternar el estado del acordeón al hacer clic en el encabezado
   const toggleAccordion = () => {
     onToggle(!isOpen);
   };
@@ -21,11 +23,22 @@ function Accordion({ title, icon, content, isOpen, onToggle }) {
         </div>
         <img src="/ArrowDown.svg" alt="ArrowDown Icon" />
       </div>
-      {isOpen && <div className={`content text-left p-1 overflow-y-scroll hide-scrollbar ${isOpen ? "flex-grow basis-0" : "" } `}>
-        {content}
-        </div>}
+      {isOpen && (
+        <div className={`content text-left p-1 overflow-y-scroll hide-scrollbar ${isOpen ? "flex-grow basis-0" : "" } `}>
+          {content}
+        </div>
+      )}
     </div>
   );
 }
+
+// Definicion de las PropTypes de Accordion
+Accordion.propTypes = {
+  title: PropTypes.string.isRequired, // Título del acordeón
+  icon: PropTypes.string.isRequired, // Ruta de la imagen del ícono
+  content: PropTypes.node.isRequired, // Contenido del acordeón (puede ser cualquier tipo de nodo React)
+  isOpen: PropTypes.bool.isRequired, // Estado de apertura/cierre del acordeón
+  onToggle: PropTypes.func.isRequired, // Función de manejo para alternar el acordeón
+};
 
 export default Accordion;
